@@ -1,0 +1,68 @@
+logging:
+  level:
+    ROOT: INFO
+    org:
+      syndrome: DEBUG
+
+spring:
+  application:
+    name: Soft Deletion - Multi Tenancy - Auditing with Spring Boot and Hibernate 5 Sample Application
+
+  datasource:
+    hikari:
+      connection-timeout: 10000
+      maximum-pool-size: ${HIKARI_MAXIMUM_POOL_SIZE:10}
+      minimum-idle: 1
+      idle-timeout: 10000
+    type: com.zaxxer.hikari.HikariDataSource
+    driverClassName: org.postgresql.Driver
+    url: jdbc:postgresql://localhost/sodemtash?currentSchema=public
+    username: postgres
+    password: postgres
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+      use-new-id-generator-mappings: false
+    properties:
+      org:
+        hibernate:
+          envers:
+            store_data_at_delete: true
+            audit_table_suffix: __aud
+      hibernate:
+        globally_quoted_identifiers: true
+        enable_lazy_load_no_trans: true
+        default_schema: public
+        jdbc:
+          lob:
+            non_contextual_creation: true
+    show-sql: true
+    database: postgresql
+
+  jackson:
+    date-format: com.fasterxml.jackson.databind.util.ISO8601DateFormat
+    time-zone: UTC
+    serialization:
+      WRITE_DATES_AS_TIMESTAMPS: false
+      INDENT_OUTPUT: true
+      FAIL_ON_EMPTY_BEANS: false
+      WRITE_BIGDECIMAL_AS_PLAIN: true
+    deserialization:
+      FAIL_ON_UNKNOWN_PROPERTIES: false
+      ADJUST_DATES_TO_CONTEXT_TIME_ZONE: false
+    parser:
+      ALLOW_UNQUOTED_FIELD_NAMES: true
+
+  flyway:
+    enabled: false
+
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    operationsSorter: method
+    disable-swagger-default-url: true
+
+
